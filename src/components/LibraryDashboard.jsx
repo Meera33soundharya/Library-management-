@@ -4,36 +4,84 @@ import { BarChart, Bar, LineChart, Line, PieChart, Pie, Cell, AreaChart, Area, R
 
 const CompleteLibraryApp = () => {
     // Initial data
-    const [books, setBooks] = useState([
-        { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", isbn: "978-0743273565", category: "Fiction", status: "available", rating: 4.5, timesIssued: 23, publishYear: 1925, pages: 180, copies: 3, publisher: "Scribner", language: "English", favorited: false },
-        { id: 2, title: "To Kill a Mockingbird", author: "Harper Lee", isbn: "978-0060935467", category: "Fiction", status: "issued", rating: 4.8, timesIssued: 31, publishYear: 1960, pages: 324, copies: 2, publisher: "Harper Perennial", language: "English", favorited: true },
-        { id: 3, title: "1984", author: "George Orwell", isbn: "978-0451524935", category: "Fiction", status: "available", rating: 4.7, timesIssued: 28, publishYear: 1949, pages: 328, copies: 4, publisher: "Signet Classic", language: "English", favorited: true },
-        { id: 4, title: "Pride and Prejudice", author: "Jane Austen", isbn: "978-0141439518", category: "Romance", status: "issued", rating: 4.6, timesIssued: 19, publishYear: 1813, pages: 279, copies: 2, publisher: "Penguin Classics", language: "English", favorited: false },
-        { id: 5, title: "The Catcher in the Rye", author: "J.D. Salinger", isbn: "978-0316769174", category: "Fiction", status: "overdue", rating: 4.2, timesIssued: 15, publishYear: 1951, pages: 277, copies: 2, publisher: "Little Brown", language: "English", favorited: false },
-        { id: 6, title: "Introduction to Algorithms", author: "Thomas Cormen", isbn: "978-0262033848", category: "Technology", status: "available", rating: 4.9, timesIssued: 42, publishYear: 2009, pages: 1292, copies: 5, publisher: "MIT Press", language: "English", favorited: true },
-        { id: 7, title: "Clean Code", author: "Robert Martin", isbn: "978-0132350884", category: "Technology", status: "issued", rating: 4.7, timesIssued: 38, publishYear: 2008, pages: 464, copies: 3, publisher: "Prentice Hall", language: "English", favorited: true },
-        { id: 8, title: "Sapiens", author: "Yuval Noah Harari", isbn: "978-0062316097", category: "History", status: "available", rating: 4.6, timesIssued: 27, publishYear: 2015, pages: 443, copies: 4, publisher: "Harper", language: "English", favorited: false }
-    ]);
+    // Initial data with LocalStorage Persistence
+    const [books, setBooks] = useState(() => {
+        const saved = localStorage.getItem('library_books');
+        return saved ? JSON.parse(saved) : [
+            // Fiction
+            { id: 1, title: "The Great Gatsby", author: "F. Scott Fitzgerald", isbn: "978-0743273565", category: "Fiction", status: "available", rating: 4.5, timesIssued: 23, publishYear: 1925, pages: 180, copies: 3, publisher: "Scribner", language: "English", favorited: false },
+            { id: 2, title: "To Kill a Mockingbird", author: "Harper Lee", isbn: "978-0060935467", category: "Fiction", status: "issued", rating: 4.8, timesIssued: 31, publishYear: 1960, pages: 324, copies: 2, publisher: "Harper Perennial", language: "English", favorited: true },
+            { id: 3, title: "1984", author: "George Orwell", isbn: "978-0451524935", category: "Fiction", status: "available", rating: 4.7, timesIssued: 28, publishYear: 1949, pages: 328, copies: 4, publisher: "Signet Classic", language: "English", favorited: true },
+            { id: 4, title: "The Catcher in the Rye", author: "J.D. Salinger", isbn: "978-0316769174", category: "Fiction", status: "overdue", rating: 4.2, timesIssued: 15, publishYear: 1951, pages: 277, copies: 2, publisher: "Little Brown", language: "English", favorited: false },
+            { id: 5, title: "Brave New World", author: "Aldous Huxley", isbn: "978-0060850524", category: "Fiction", status: "available", rating: 4.5, timesIssued: 22, publishYear: 1932, pages: 288, copies: 3, publisher: "Harper Perennial", language: "English", favorited: false },
 
-    const [students, setStudents] = useState([
-        { id: 1, name: "Alice Johnson", studentId: "STU001", email: "alice@school.edu", phone: "+1-555-0101", address: "123 Campus Drive", borrowedBooks: 2, fines: 0, joinDate: "2023-09-01", avatar: "👩" },
-        { id: 2, name: "Bob Smith", studentId: "STU002", email: "bob@school.edu", phone: "+1-555-0102", address: "456 University Ave", borrowedBooks: 1, fines: 5, joinDate: "2023-09-01", avatar: "👨" },
-        { id: 3, name: "Carol Davis", studentId: "STU003", email: "carol@school.edu", phone: "+1-555-0103", address: "789 College Street", borrowedBooks: 0, fines: 0, joinDate: "2023-09-15", avatar: "👩🦰" },
-        { id: 4, name: "David Wilson", studentId: "STU004", email: "david@school.edu", phone: "+1-555-0104", address: "321 Academic Blvd", borrowedBooks: 3, fines: 10, joinDate: "2023-09-15", avatar: "👨🦱" }
-    ]);
+            // Romance
+            { id: 6, title: "Pride and Prejudice", author: "Jane Austen", isbn: "978-0141439518", category: "Romance", status: "issued", rating: 4.6, timesIssued: 19, publishYear: 1813, pages: 279, copies: 2, publisher: "Penguin Classics", language: "English", favorited: false },
+            { id: 7, title: "Jane Eyre", author: "Charlotte Brontë", isbn: "978-0141441146", category: "Romance", status: "available", rating: 4.5, timesIssued: 18, publishYear: 1847, pages: 532, copies: 3, publisher: "Penguin Classics", language: "English", favorited: true },
+            { id: 8, title: "Wuthering Heights", author: "Emily Brontë", isbn: "978-0141439556", category: "Romance", status: "available", rating: 4.3, timesIssued: 14, publishYear: 1847, pages: 416, copies: 2, publisher: "Penguin Classics", language: "English", favorited: false },
 
-    const [transactions, setTransactions] = useState([
-        { id: 1, bookTitle: "To Kill a Mockingbird", studentName: "Alice Johnson", type: "issue", date: "2026-01-15", dueDate: "2026-02-05", status: "active" },
-        { id: 2, bookTitle: "The Great Gatsby", studentName: "Bob Smith", type: "return", date: "2026-01-20", dueDate: null, status: "completed" },
-        { id: 3, bookTitle: "Pride and Prejudice", studentName: "Alice Johnson", type: "issue", date: "2026-01-18", dueDate: "2026-02-08", status: "active" },
-        { id: 4, bookTitle: "Clean Code", studentName: "David Wilson", type: "issue", date: "2026-01-10", dueDate: "2026-01-31", status: "active" },
-        { id: 5, bookTitle: "The Catcher in the Rye", studentName: "Bob Smith", type: "issue", date: "2025-12-20", dueDate: "2026-01-10", status: "overdue" }
-    ]);
+            // Technology
+            { id: 9, title: "Introduction to Algorithms", author: "Thomas Cormen", isbn: "978-0262033848", category: "Technology", status: "available", rating: 4.9, timesIssued: 42, publishYear: 2009, pages: 1292, copies: 5, publisher: "MIT Press", language: "English", favorited: true },
+            { id: 10, title: "Clean Code", author: "Robert Martin", isbn: "978-0132350884", category: "Technology", status: "issued", rating: 4.7, timesIssued: 38, publishYear: 2008, pages: 464, copies: 3, publisher: "Prentice Hall", language: "English", favorited: true },
+            { id: 11, title: "Design Patterns", author: "Gang of Four", isbn: "978-0201633610", category: "Technology", status: "available", rating: 4.6, timesIssued: 35, publishYear: 1994, pages: 395, copies: 4, publisher: "Addison-Wesley", language: "English", favorited: true },
+            { id: 12, title: "The Pragmatic Programmer", author: "David Thomas", isbn: "978-0135957059", category: "Technology", status: "available", rating: 4.8, timesIssued: 29, publishYear: 2019, pages: 352, copies: 3, publisher: "Addison-Wesley", language: "English", favorited: false },
 
-    const [reservations, setReservations] = useState([
-        { id: 1, bookTitle: "To Kill a Mockingbird", studentName: "Carol Davis", studentId: "STU003", requestDate: "2026-01-25", status: "pending" },
-        { id: 2, bookTitle: "Clean Code", studentName: "Bob Smith", studentId: "STU002", requestDate: "2026-01-26", status: "pending" }
-    ]);
+            // History
+            { id: 13, title: "Sapiens", author: "Yuval Noah Harari", isbn: "978-0062316097", category: "History", status: "available", rating: 4.6, timesIssued: 27, publishYear: 2015, pages: 443, copies: 4, publisher: "Harper", language: "English", favorited: false },
+            { id: 14, title: "Guns, Germs, and Steel", author: "Jared Diamond", isbn: "978-0393354324", category: "History", status: "available", rating: 4.4, timesIssued: 21, publishYear: 1997, pages: 528, copies: 3, publisher: "W. W. Norton", language: "English", favorited: false },
+            { id: 15, title: "A Brief History of Time", author: "Stephen Hawking", isbn: "978-0553380163", category: "History", status: "issued", rating: 4.7, timesIssued: 33, publishYear: 1988, pages: 256, copies: 4, publisher: "Bantam", language: "English", favorited: true },
+
+            // Science
+            { id: 16, title: "The Selfish Gene", author: "Richard Dawkins", isbn: "978-0198788607", category: "Science", status: "available", rating: 4.5, timesIssued: 24, publishYear: 1976, pages: 544, copies: 3, publisher: "Oxford University Press", language: "English", favorited: false },
+            { id: 17, title: "Cosmos", author: "Carl Sagan", isbn: "978-0345539434", category: "Science", status: "available", rating: 4.8, timesIssued: 30, publishYear: 1980, pages: 432, copies: 4, publisher: "Ballantine Books", language: "English", favorited: true },
+            { id: 18, title: "The Origin of Species", author: "Charles Darwin", isbn: "978-0451529060", category: "Science", status: "available", rating: 4.3, timesIssued: 16, publishYear: 1859, pages: 576, copies: 2, publisher: "Signet Classic", language: "English", favorited: false },
+
+            // Philosophy
+            { id: 19, title: "Meditations", author: "Marcus Aurelius", isbn: "978-0140449334", category: "Philosophy", status: "available", rating: 4.7, timesIssued: 25, publishYear: 180, pages: 256, copies: 3, publisher: "Penguin Classics", language: "English", favorited: true },
+            { id: 20, title: "Beyond Good and Evil", author: "Friedrich Nietzsche", isbn: "978-0140449235", category: "Philosophy", status: "issued", rating: 4.2, timesIssued: 12, publishYear: 1886, pages: 240, copies: 2, publisher: "Penguin Classics", language: "English", favorited: false },
+            { id: 21, title: "The Republic", author: "Plato", isbn: "978-0140455113", category: "Philosophy", status: "available", rating: 4.4, timesIssued: 18, publishYear: -375, pages: 416, copies: 3, publisher: "Penguin Classics", language: "English", favorited: false },
+
+            // Self-Help
+            { id: 22, title: "Atomic Habits", author: "James Clear", isbn: "978-0735211292", category: "Self-Help", status: "available", rating: 4.9, timesIssued: 45, publishYear: 2018, pages: 320, copies: 5, publisher: "Avery", language: "English", favorited: true },
+            { id: 23, title: "The 7 Habits of Highly Effective People", author: "Stephen Covey", isbn: "978-1982137274", category: "Self-Help", status: "issued", rating: 4.6, timesIssued: 32, publishYear: 1989, pages: 432, copies: 4, publisher: "Simon & Schuster", language: "English", favorited: true },
+            { id: 24, title: "Think and Grow Rich", author: "Napoleon Hill", isbn: "978-1585424337", category: "Self-Help", status: "available", rating: 4.4, timesIssued: 28, publishYear: 1937, pages: 320, copies: 3, publisher: "TarcherPerigee", language: "English", favorited: false },
+
+            // Mystery
+            { id: 25, title: "The Girl with the Dragon Tattoo", author: "Stieg Larsson", isbn: "978-0307454546", category: "Mystery", status: "available", rating: 4.5, timesIssued: 26, publishYear: 2005, pages: 672, copies: 3, publisher: "Vintage Crime", language: "English", favorited: false },
+            { id: 26, title: "Gone Girl", author: "Gillian Flynn", isbn: "978-0307588371", category: "Mystery", status: "issued", rating: 4.3, timesIssued: 22, publishYear: 2012, pages: 432, copies: 3, publisher: "Crown", language: "English", favorited: true },
+            { id: 27, title: "The Da Vinci Code", author: "Dan Brown", isbn: "978-0307474278", category: "Mystery", status: "available", rating: 4.1, timesIssued: 35, publishYear: 2003, pages: 597, copies: 4, publisher: "Anchor", language: "English", favorited: false },
+            { id: 28, title: "And Then There Were None", author: "Agatha Christie", isbn: "978-0062073488", category: "Mystery", status: "available", rating: 4.6, timesIssued: 40, publishYear: 1939, pages: 272, copies: 5, publisher: "William Morrow", language: "English", favorited: true }
+        ];
+    });
+
+    const [students, setStudents] = useState(() => {
+        const saved = localStorage.getItem('library_students');
+        return saved ? JSON.parse(saved) : [
+            { id: 1, name: "Alice Johnson", studentId: "STU001", email: "alice@school.edu", phone: "+1-555-0101", address: "123 Campus Drive", borrowedBooks: 2, fines: 0, joinDate: "2023-09-01", avatar: "👩" },
+            { id: 2, name: "Bob Smith", studentId: "STU002", email: "bob@school.edu", phone: "+1-555-0102", address: "456 University Ave", borrowedBooks: 1, fines: 5, joinDate: "2023-09-01", avatar: "👨" },
+            { id: 3, name: "Carol Davis", studentId: "STU003", email: "carol@school.edu", phone: "+1-555-0103", address: "789 College Street", borrowedBooks: 0, fines: 0, joinDate: "2023-09-15", avatar: "👩🦰" },
+            { id: 4, name: "David Wilson", studentId: "STU004", email: "david@school.edu", phone: "+1-555-0104", address: "321 Academic Blvd", borrowedBooks: 3, fines: 10, joinDate: "2023-09-15", avatar: "👨🦱" }
+        ];
+    });
+
+    const [transactions, setTransactions] = useState(() => {
+        const saved = localStorage.getItem('library_transactions');
+        return saved ? JSON.parse(saved) : [
+            { id: 1, bookTitle: "To Kill a Mockingbird", studentName: "Alice Johnson", type: "issue", date: "2026-01-15", dueDate: "2026-02-05", status: "active" },
+            { id: 2, bookTitle: "The Great Gatsby", studentName: "Bob Smith", type: "return", date: "2026-01-20", dueDate: null, status: "completed" },
+            { id: 3, bookTitle: "Pride and Prejudice", studentName: "Alice Johnson", type: "issue", date: "2026-01-18", dueDate: "2026-02-08", status: "active" },
+            { id: 4, bookTitle: "Clean Code", studentName: "David Wilson", type: "issue", date: "2026-01-10", dueDate: "2026-01-31", status: "active" },
+            { id: 5, bookTitle: "The Catcher in the Rye", studentName: "Bob Smith", type: "issue", date: "2025-12-20", dueDate: "2026-01-10", status: "overdue" }
+        ];
+    });
+
+    const [reservations, setReservations] = useState(() => {
+        const saved = localStorage.getItem('library_reservations');
+        return saved ? JSON.parse(saved) : [
+            { id: 1, bookTitle: "To Kill a Mockingbird", studentName: "Carol Davis", studentId: "STU003", requestDate: "2026-01-25", status: "pending" },
+            { id: 2, bookTitle: "Clean Code", studentName: "Bob Smith", studentId: "STU002", requestDate: "2026-01-26", status: "pending" }
+        ];
+    });
 
     // UI State
     const [activeTab, setActiveTab] = useState('dashboard');
@@ -42,7 +90,7 @@ const CompleteLibraryApp = () => {
     const [filterStatus, setFilterStatus] = useState('all');
     const [sortBy, setSortBy] = useState('title');
     const [showModal, setShowModal] = useState(false);
-    const [modalType, setModalType] = useState('');
+    const [modalType, setModalType] = useState('')
     const [selectedItem, setSelectedItem] = useState(null);
     const [showNotifications, setShowNotifications] = useState(false);
     const [showScanner, setShowScanner] = useState(false);
@@ -51,6 +99,61 @@ const CompleteLibraryApp = () => {
     const [selectedTimeRange, setSelectedTimeRange] = useState('month');
     const [refreshing, setRefreshing] = useState(false);
     const [formData, setFormData] = useState({});
+
+    // Online Search State
+    const [onlineSearchTerm, setOnlineSearchTerm] = useState('');
+    const [onlineSearchResults, setOnlineSearchResults] = useState([]);
+    const [isSearchingOnline, setIsSearchingOnline] = useState(false);
+    const [showOnlineSearch, setShowOnlineSearch] = useState(false);
+    const [selectedOnlineCategory, setSelectedOnlineCategory] = useState(null);
+
+    // Persistence Effects
+    useEffect(() => {
+        localStorage.setItem('library_books', JSON.stringify(books));
+    }, [books]);
+
+    useEffect(() => {
+        localStorage.setItem('library_students', JSON.stringify(students));
+    }, [students]);
+
+    useEffect(() => {
+        localStorage.setItem('library_transactions', JSON.stringify(transactions));
+    }, [transactions]);
+
+    useEffect(() => {
+        localStorage.setItem('library_reservations', JSON.stringify(reservations));
+    }, [reservations]);
+
+    // Available categories for online browsing
+    const onlineCategories = [
+        // Academic/Exam Study Categories
+        { name: 'Mathematics', icon: '🔢', color: '#3b82f6', subject: 'mathematics', section: 'study' },
+        { name: 'Physics', icon: '⚛️', color: '#8b5cf6', subject: 'physics', section: 'study' },
+        { name: 'Chemistry', icon: '🧪', color: '#10b981', subject: 'chemistry', section: 'study' },
+        { name: 'Biology', icon: '🧬', color: '#22c55e', subject: 'biology', section: 'study' },
+        { name: 'Computer Science', icon: '💻', color: '#6366f1', subject: 'computer_science', section: 'study' },
+        { name: 'Economics', icon: '📊', color: '#f59e0b', subject: 'economics', section: 'study' },
+        { name: 'Accounting', icon: '📒', color: '#84cc16', subject: 'accounting', section: 'study' },
+        { name: 'Business', icon: '💼', color: '#0ea5e9', subject: 'business', section: 'study' },
+        { name: 'Engineering', icon: '⚙️', color: '#64748b', subject: 'engineering', section: 'study' },
+        { name: 'Medicine', icon: '🏥', color: '#ef4444', subject: 'medicine', section: 'study' },
+        { name: 'Law', icon: '⚖️', color: '#78716c', subject: 'law', section: 'study' },
+        { name: 'Psychology', icon: '🧠', color: '#ec4899', subject: 'psychology', section: 'study' },
+        { name: 'Statistics', icon: '📈', color: '#14b8a6', subject: 'statistics', section: 'study' },
+        { name: 'English', icon: '📝', color: '#a855f7', subject: 'english_language', section: 'study' },
+        { name: 'Geography', icon: '🌍', color: '#06b6d4', subject: 'geography', section: 'study' },
+        { name: 'Political Science', icon: '🏛️', color: '#f97316', subject: 'political_science', section: 'study' },
+
+        // General Reading Categories
+        { name: 'Textbooks', icon: '📚', color: '#4f46e5', subject: 'textbooks', section: 'general' },
+        { name: 'Science', icon: '🔬', color: '#10b981', subject: 'science', section: 'general' },
+        { name: 'History', icon: '📜', color: '#f59e0b', subject: 'history', section: 'general' },
+        { name: 'Philosophy', icon: '💭', color: '#ec4899', subject: 'philosophy', section: 'general' },
+        { name: 'Fiction', icon: '📖', color: '#667eea', subject: 'fiction', section: 'general' },
+        { name: 'Self-Help', icon: '💪', color: '#84cc16', subject: 'self_help', section: 'general' },
+        { name: 'Biography', icon: '👤', color: '#06b6d4', subject: 'biography', section: 'general' },
+        { name: 'Technology', icon: '🖥️', color: '#8b5cf6', subject: 'technology', section: 'general' },
+    ];
 
     // Calculate statistics
     const stats = {
@@ -302,14 +405,30 @@ const CompleteLibraryApp = () => {
     };
 
     const exportData = () => {
-        const data = { books, students, transactions, reservations, stats, exportDate: new Date().toISOString() };
-        const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `library-data-${Date.now()}.json`;
-        a.click();
-        addToast('Data exported successfully!');
+        try {
+            const data = {
+                books,
+                students,
+                transactions,
+                reservations,
+                stats,
+                exportDate: new Date().toISOString()
+            };
+            const jsonString = JSON.stringify(data, null, 2);
+            const blob = new Blob([jsonString], { type: 'application/json' });
+            const url = window.URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `library-data-${new Date().toISOString().split('T')[0]}.json`;
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            window.URL.revokeObjectURL(url);
+            addToast('Data exported successfully!');
+        } catch (error) {
+            console.error('Export error:', error);
+            addToast('Export failed. Please try again.', 'error');
+        }
     };
 
     const handleRefresh = () => {
@@ -320,13 +439,119 @@ const CompleteLibraryApp = () => {
         }, 1000);
     };
 
+    // Online Book Search using Open Library API
+    const searchBooksOnline = async () => {
+        if (!onlineSearchTerm.trim()) {
+            addToast('Please enter a search term', 'info');
+            return;
+        }
+
+        setIsSearchingOnline(true);
+        setOnlineSearchResults([]);
+
+        try {
+            const response = await fetch(
+                `https://openlibrary.org/search.json?q=${encodeURIComponent(onlineSearchTerm)}&limit=20`
+            );
+            const data = await response.json();
+
+            const formattedResults = data.docs.map((book, index) => ({
+                id: `online-${index}`,
+                title: book.title || 'Unknown Title',
+                author: book.author_name ? book.author_name[0] : 'Unknown Author',
+                isbn: book.isbn ? book.isbn[0] : 'N/A',
+                publishYear: book.first_publish_year || 'N/A',
+                category: book.subject ? book.subject[0] : 'General',
+                pages: book.number_of_pages_median || 0,
+                publisher: book.publisher ? book.publisher[0] : 'Unknown',
+                coverId: book.cover_i,
+                language: book.language ? book.language[0] : 'English'
+            }));
+
+            setOnlineSearchResults(formattedResults);
+            if (formattedResults.length === 0) {
+                addToast('No books found. Try a different search term.', 'info');
+            } else {
+                addToast(`Found ${formattedResults.length} books online!`);
+            }
+        } catch (error) {
+            console.error('Search error:', error);
+            addToast('Error searching online. Please try again.', 'error');
+        } finally {
+            setIsSearchingOnline(false);
+        }
+    };
+
+    const addOnlineBook = (onlineBook) => {
+        const newBook = {
+            id: books.length + 1,
+            title: onlineBook.title,
+            author: onlineBook.author,
+            isbn: onlineBook.isbn,
+            category: onlineBook.category.length > 20 ? 'General' : onlineBook.category,
+            status: 'available',
+            rating: 0,
+            timesIssued: 0,
+            publishYear: onlineBook.publishYear,
+            pages: onlineBook.pages,
+            copies: 1,
+            publisher: onlineBook.publisher,
+            language: onlineBook.language,
+            favorited: false,
+            coverId: onlineBook.coverId
+        };
+        setBooks([...books, newBook]);
+        addToast(`"${onlineBook.title}" added to your library!`);
+    };
+
+    // Browse books by category/topic
+    const browseByCategory = async (category) => {
+        setSelectedOnlineCategory(category);
+        setIsSearchingOnline(true);
+        setOnlineSearchResults([]);
+        setOnlineSearchTerm('');
+
+        try {
+            const response = await fetch(
+                `https://openlibrary.org/subjects/${category.subject}.json?limit=50`
+            );
+            const data = await response.json();
+
+            const formattedResults = data.works.map((book, index) => ({
+                id: `online-${category.subject}-${index}`,
+                title: book.title || 'Unknown Title',
+                author: book.authors ? book.authors[0]?.name : 'Unknown Author',
+                isbn: 'N/A',
+                publishYear: book.first_publish_year || 'N/A',
+                category: category.name,
+                pages: 0,
+                publisher: 'Unknown',
+                coverId: book.cover_id,
+                language: 'English',
+                key: book.key
+            }));
+
+            setOnlineSearchResults(formattedResults);
+            addToast(`Loaded ${formattedResults.length} ${category.name} books!`);
+        } catch (error) {
+            console.error('Browse error:', error);
+            addToast('Error loading books. Please try again.', 'error');
+        } finally {
+            setIsSearchingOnline(false);
+        }
+    };
+
+    const handlePrint = () => {
+        window.print();
+    };
+
     const quickActions = [
         { id: 1, title: 'Issue Book', icon: <BookOpen size={20} />, color: '#667eea', action: () => openModal('issueBook') },
         { id: 2, title: 'Add Student', icon: <Users size={20} />, color: '#764ba2', action: () => openModal('addStudent') },
         { id: 3, title: 'Return Book', icon: <CheckCircle size={20} />, color: '#34d399', action: () => openModal('returnBook') },
         { id: 4, title: 'Add Book', icon: <Plus size={20} />, color: '#f59e0b', action: () => openModal('addBook') },
-        { id: 5, title: 'Scan Barcode', icon: <QrCode size={20} />, color: '#ef4444', action: () => setShowScanner(true) },
-        { id: 6, title: 'Export Data', icon: <Download size={20} />, color: '#8b5cf6', action: exportData }
+        { id: 5, title: 'Print Report', icon: <BarChart3 size={20} />, color: '#10b981', action: handlePrint },
+        { id: 6, title: 'Backup Data', icon: <Download size={20} />, color: '#8b5cf6', action: exportData }
     ];
 
     return (
@@ -1153,6 +1378,10 @@ const CompleteLibraryApp = () => {
                                 <option value="Technology">Technology</option>
                                 <option value="History">History</option>
                                 <option value="Romance">Romance</option>
+                                <option value="Science">Science</option>
+                                <option value="Philosophy">Philosophy</option>
+                                <option value="Self-Help">Self-Help</option>
+                                <option value="Mystery">Mystery</option>
                             </select>
 
                             <select className="select" value={filterStatus} onChange={(e) => setFilterStatus(e.target.value)} style={{ width: 'auto' }}>
@@ -1173,7 +1402,308 @@ const CompleteLibraryApp = () => {
                                 <Plus size={18} />
                                 Add Book
                             </button>
+
+                            <button
+                                className="btn btn-secondary"
+                                onClick={() => setShowOnlineSearch(!showOnlineSearch)}
+                                style={{
+                                    background: showOnlineSearch ? 'linear-gradient(135deg, #10b981 0%, #059669 100%)' : undefined
+                                }}
+                            >
+                                🌐 Search Online
+                            </button>
                         </div>
+
+                        {/* Online Book Search Panel */}
+                        {showOnlineSearch && (
+                            <div className="card" style={{ marginBottom: '20px', animation: 'slideInUp 0.3s ease' }}>
+                                <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                                    <h3 style={{ margin: 0, fontSize: '20px', fontWeight: '700' }}>🌐 Search Books Online</h3>
+                                    <span style={{
+                                        fontSize: '12px',
+                                        opacity: 0.7,
+                                        background: 'rgba(16, 185, 129, 0.2)',
+                                        padding: '4px 10px',
+                                        borderRadius: '12px',
+                                        color: '#10b981'
+                                    }}>
+                                        Powered by Open Library
+                                    </span>
+                                </div>
+
+                                <div style={{ display: 'flex', gap: '10px', marginBottom: '20px' }}>
+                                    <div style={{ position: 'relative', flex: 1 }}>
+                                        <Search size={18} style={{ position: 'absolute', left: '12px', top: '50%', transform: 'translateY(-50%)', opacity: 0.5 }} />
+                                        <input
+                                            type="text"
+                                            placeholder="Search for any book online (title, author, subject)..."
+                                            className="input"
+                                            value={onlineSearchTerm}
+                                            onChange={(e) => setOnlineSearchTerm(e.target.value)}
+                                            onKeyPress={(e) => e.key === 'Enter' && searchBooksOnline()}
+                                            style={{ paddingLeft: '40px' }}
+                                        />
+                                    </div>
+                                    <button
+                                        className="btn btn-primary"
+                                        onClick={searchBooksOnline}
+                                        disabled={isSearchingOnline}
+                                        style={{ minWidth: '140px' }}
+                                    >
+                                        {isSearchingOnline ? (
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <RefreshCw size={16} style={{ animation: 'spin 1s linear infinite' }} />
+                                                Loading...
+                                            </span>
+                                        ) : (
+                                            <span style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+                                                <Search size={16} />
+                                                Search
+                                            </span>
+                                        )}
+                                    </button>
+                                </div>
+
+                                {/* Category/Topic Browser */}
+                                <div style={{ marginBottom: '20px' }}>
+                                    {/* Exam Study Section */}
+                                    <h4 style={{
+                                        margin: '0 0 12px 0',
+                                        fontSize: '18px',
+                                        fontWeight: '700',
+                                        display: 'flex',
+                                        alignItems: 'center',
+                                        gap: '8px'
+                                    }}>
+                                        🎓 Exam Study / Academic Subjects
+                                        <span style={{
+                                            fontSize: '11px',
+                                            background: 'rgba(59, 130, 246, 0.2)',
+                                            color: '#3b82f6',
+                                            padding: '4px 10px',
+                                            borderRadius: '10px',
+                                            fontWeight: '600'
+                                        }}>
+                                            For Students
+                                        </span>
+                                    </h4>
+                                    <div style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))',
+                                        gap: '8px',
+                                        marginBottom: '20px'
+                                    }}>
+                                        {onlineCategories.filter(c => c.section === 'study').map((category) => (
+                                            <div
+                                                key={category.name}
+                                                onClick={() => browseByCategory(category)}
+                                                style={{
+                                                    padding: '10px 6px',
+                                                    borderRadius: '10px',
+                                                    background: selectedOnlineCategory?.name === category.name
+                                                        ? category.color
+                                                        : 'rgba(255, 255, 255, 0.05)',
+                                                    border: `2px solid ${selectedOnlineCategory?.name === category.name ? category.color : 'rgba(255, 255, 255, 0.1)'}`,
+                                                    cursor: 'pointer',
+                                                    transition: 'all 0.3s ease',
+                                                    textAlign: 'center',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    gap: '4px'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    if (selectedOnlineCategory?.name !== category.name) {
+                                                        e.currentTarget.style.background = `${category.color}30`;
+                                                        e.currentTarget.style.borderColor = category.color;
+                                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                                    }
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    if (selectedOnlineCategory?.name !== category.name) {
+                                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                                        e.currentTarget.style.transform = 'translateY(0)';
+                                                    }
+                                                }}
+                                            >
+                                                <span style={{ fontSize: '22px' }}>{category.icon}</span>
+                                                <span style={{
+                                                    fontSize: '10px',
+                                                    fontWeight: '600',
+                                                    opacity: selectedOnlineCategory?.name === category.name ? 1 : 0.8,
+                                                    lineHeight: 1.2
+                                                }}>
+                                                    {category.name}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+
+                                    {/* General Reading Section */}
+                                    <h4 style={{ margin: '0 0 12px 0', fontSize: '16px', fontWeight: '600', opacity: 0.8 }}>
+                                        📚 General Reading
+                                    </h4>
+                                    <div style={{
+                                        display: 'grid',
+                                        gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))',
+                                        gap: '8px'
+                                    }}>
+                                        {onlineCategories.filter(c => c.section === 'general').map((category) => (
+                                            <div
+                                                key={category.name}
+                                                onClick={() => browseByCategory(category)}
+                                                style={{
+                                                    padding: '10px 6px',
+                                                    borderRadius: '10px',
+                                                    background: selectedOnlineCategory?.name === category.name
+                                                        ? category.color
+                                                        : 'rgba(255, 255, 255, 0.05)',
+                                                    border: `2px solid ${selectedOnlineCategory?.name === category.name ? category.color : 'rgba(255, 255, 255, 0.1)'}`,
+                                                    cursor: 'pointer',
+                                                    transition: 'all 0.3s ease',
+                                                    textAlign: 'center',
+                                                    display: 'flex',
+                                                    flexDirection: 'column',
+                                                    alignItems: 'center',
+                                                    gap: '4px'
+                                                }}
+                                                onMouseEnter={(e) => {
+                                                    if (selectedOnlineCategory?.name !== category.name) {
+                                                        e.currentTarget.style.background = `${category.color}30`;
+                                                        e.currentTarget.style.borderColor = category.color;
+                                                        e.currentTarget.style.transform = 'translateY(-2px)';
+                                                    }
+                                                }}
+                                                onMouseLeave={(e) => {
+                                                    if (selectedOnlineCategory?.name !== category.name) {
+                                                        e.currentTarget.style.background = 'rgba(255, 255, 255, 0.05)';
+                                                        e.currentTarget.style.borderColor = 'rgba(255, 255, 255, 0.1)';
+                                                        e.currentTarget.style.transform = 'translateY(0)';
+                                                    }
+                                                }}
+                                            >
+                                                <span style={{ fontSize: '22px' }}>{category.icon}</span>
+                                                <span style={{
+                                                    fontSize: '10px',
+                                                    fontWeight: '600',
+                                                    opacity: selectedOnlineCategory?.name === category.name ? 1 : 0.8
+                                                }}>
+                                                    {category.name}
+                                                </span>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+
+                                {/* Online Search Results */}
+                                {onlineSearchResults.length > 0 && (
+                                    <div>
+                                        <p style={{ margin: '0 0 15px 0', opacity: 0.7 }}>
+                                            Found {onlineSearchResults.length} books online. Click "Add to Library" to add any book.
+                                        </p>
+                                        <div style={{
+                                            display: 'grid',
+                                            gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))',
+                                            gap: '15px',
+                                            maxHeight: '500px',
+                                            overflowY: 'auto',
+                                            padding: '5px'
+                                        }}>
+                                            {onlineSearchResults.map((book, index) => (
+                                                <div
+                                                    key={book.id}
+                                                    style={{
+                                                        background: 'rgba(255, 255, 255, 0.05)',
+                                                        borderRadius: '12px',
+                                                        padding: '15px',
+                                                        border: '1px solid rgba(255, 255, 255, 0.1)',
+                                                        display: 'flex',
+                                                        gap: '12px',
+                                                        transition: 'all 0.3s ease'
+                                                    }}
+                                                >
+                                                    {/* Book Cover */}
+                                                    <div style={{
+                                                        width: '60px',
+                                                        height: '90px',
+                                                        borderRadius: '6px',
+                                                        background: book.coverId
+                                                            ? `url(https://covers.openlibrary.org/b/id/${book.coverId}-M.jpg) center/cover`
+                                                            : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                                                        display: 'flex',
+                                                        alignItems: 'center',
+                                                        justifyContent: 'center',
+                                                        flexShrink: 0,
+                                                        fontSize: '24px'
+                                                    }}>
+                                                        {!book.coverId && '📚'}
+                                                    </div>
+
+                                                    <div style={{ flex: 1, minWidth: 0 }}>
+                                                        <h4 style={{
+                                                            margin: '0 0 4px 0',
+                                                            fontSize: '14px',
+                                                            fontWeight: '600',
+                                                            whiteSpace: 'nowrap',
+                                                            overflow: 'hidden',
+                                                            textOverflow: 'ellipsis'
+                                                        }}>
+                                                            {book.title}
+                                                        </h4>
+                                                        <p style={{ margin: '0 0 4px 0', fontSize: '12px', opacity: 0.7 }}>
+                                                            {book.author}
+                                                        </p>
+                                                        <p style={{ margin: '0 0 8px 0', fontSize: '11px', opacity: 0.5 }}>
+                                                            {book.publishYear} • {book.pages > 0 ? `${book.pages} pages` : 'Unknown pages'}
+                                                        </p>
+                                                        <div style={{ display: 'flex', gap: '6px', flexWrap: 'wrap' }}>
+                                                            <button
+                                                                className="btn btn-primary"
+                                                                onClick={() => {
+                                                                    const readUrl = book.key
+                                                                        ? `https://openlibrary.org${book.key}`
+                                                                        : `https://openlibrary.org/search?q=${encodeURIComponent(book.title)}`;
+                                                                    window.open(readUrl, '_blank');
+                                                                }}
+                                                                style={{
+                                                                    padding: '6px 12px',
+                                                                    fontSize: '12px',
+                                                                    background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)'
+                                                                }}
+                                                            >
+                                                                <BookOpen size={14} />
+                                                                Read / Study
+                                                            </button>
+                                                            <button
+                                                                className="btn btn-secondary"
+                                                                onClick={() => addOnlineBook(book)}
+                                                                style={{ padding: '6px 12px', fontSize: '12px' }}
+                                                            >
+                                                                <Plus size={14} />
+                                                                Add
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {onlineSearchResults.length === 0 && !isSearchingOnline && (
+                                    <div style={{
+                                        textAlign: 'center',
+                                        padding: '30px',
+                                        opacity: 0.6
+                                    }}>
+                                        <div style={{ fontSize: '48px', marginBottom: '10px' }}>🔍</div>
+                                        <p>Search for any book by title, author, or subject.</p>
+                                        <p style={{ fontSize: '12px' }}>Results from millions of books worldwide!</p>
+                                    </div>
+                                )}
+                            </div>
+                        )}
 
                         <div style={{
                             display: 'grid',
